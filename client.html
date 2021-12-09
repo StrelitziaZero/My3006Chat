@@ -1,214 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
-  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
       /* My CSS code  */
-      body{
-          background-color: #fff8c5;
-          font-family: Verdana;
-      }
-      /* title{
-        margin: 0 auto;
-        font-size: 36px;
-        color: rgb(38, 0, 209);
-        text-align:center;
-      } */
-      .abc{
-        margin: 0 auto;
-      }
-      .tit{
-        text-align:center;
-        margin: 0 auto;
-        color: rgb(38, 0, 209);
-      }
-      .mess{
-        background-color: #ffffff;
-        border: 1px solid #000;
-        width: 700px;
-        margin: 0 auto;
-        padding: 20px;
-        text-align:center;
-      } 
-      .btn{
-        background-color: #00c8fa; 
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px      ;
-        border-radius: 8px;
-        border: 2px solid #05fd26;
-        -webkit-transition-duration: 0.4s; 
-        transition-duration: 0.4s;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-      }
-      .btn:hover {
-        background-color: #af4c6d; 
-        color: white;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.40), 0 20px 50px 0 rgba(0,0,0,0.19);
-      }
-      .btn2{
-        background-color: #00fa2a; 
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px      ;
-        border-radius: 8px;
-        border: 2px solid #3528eb;
-        -webkit-transition-duration: 0.4s; /* Safari */
-        transition-duration: 0.4s;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-      }
-      .btn2:hover {
-        background-color: #0066ff; 
-        color: white;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.40), 0 20px 50px 0 rgba(0,0,0,0.19);
-      }
-      .ipt{
-        background-color: #fafafa; 
-        border-radius: 8px;
-        height: 30px;
-      }
-      .span-1{
-        font-size: 15px;
-        color: rgb(0, 243, 170);
-      }
-      .span-2{
-        font-size: 20px;
-        color: rgb(0, 0, 0);
-      }
-       .user{
-        margin: 50px;
-        text-align:center
-      }    
+     
   </style>
     <title class="tit">Chat Room</title>
 </head>
 
+<!-- My javascript code -->
+
 <body>
+  <!-- My html code -->
   <h1 class="tit" id="abc">Chat Room</h1>
 
-  <div id="mocha"></div>
-  <script src="https://unpkg.com/chai/chai.js"></script>
-  <script src="https://unpkg.com/mocha/mocha.js"></script>
-  <script class="mocha-test">
-      mocha.setup('tdd');
-  </script> 
-  <script src="mytest.js"></script>
-  <script class="mocha-exec">
-     mocha.run();
-  </script>
+ 
 
 <div class="user" id="iptbtn">
     <input type="text" id="name" class="ipt">
     <button id="setname" class="btn">Join Chat</button>
+</br>
     <input type="text" id="text" class="ipt">
     <button id="btn" type="button" class="btn2">Send</button> 
   </div>
 
     <div id="backinfo" class="mess"></div>
-   <script>  
-        var ws=null;
-       document.getElementById('setname').onclick = function() {
-         var name = document.getElementById('name').value;
-         var time1= new Date().format("yyyy/MM/dd hh:mm:ss");
-
-          if(name === '')return console.log("Name is null");
-           
-          ws = new WebSocket('ws://localhost:8888');
-           
-          //Triggered when the connection is established
-           ws.onopen = function(){
-            //Send a message to the server
-            ws.send(JSON.stringify({
-                name:name,
-                time:time1,
-                type:'setname'
-            }));
-          }
-
-            document.getElementById('btn').onclick = send;
-            document.getElementById('text').onkeyup = function(e) {
-                if(e.keyCode !== 13) return;
-                send();
-            }
-
-       //Automatically receive the data returned by the server
-       ws.onmessage = function(e){   
-          var con = document.getElementById('backinfo');
-         con.insertBefore(createChatPanel(JSON.parse(e.data)),con.children[0]);
-       }
-       //Will join the room button setting is not available (can only join once)
-       document.getElementById('setname').setAttribute('disabled',true);
-       document.getElementById('name').setAttribute('disabled',true);
-    }
-
-      function createChatPanel(data) {
-            var name = data.name;
-            var text = data.text;
-            var time = data.time;
-
-            var div = document.createElement('div');
-            var span1= document.createElement('span1');
-            var span2= document.createElement('span2');
-
-            span1.innerHTML = name + ' ' + time;
-            span2.innerHTML = text;
    
-
-            div.appendChild(span1);
-            div.appendChild(document.createElement('br'));
-            div.appendChild(span2);
-            //span2.setAttribute("id",text);
-            span1.setAttribute("class","span-1");
-            span2.setAttribute("class","span-2");
-            span2.setAttribute("id","2span");
-            return div;
-        }
-        
-         //Send date info
-          function send() {
-            var time2= new Date().format("yyyy/MM/dd hh:mm:ss");
-            var text=document.getElementById('text');
-                if(text.value === '')return;
-                ws.send(JSON.stringify({
-                 text:text.value,
-                 time:time2,
-                 type:"chat"
-            }));             
-          text.value = '';
-          }
-
-    //The format method is extended in the Date prototype to make it easy to format the date format for output.
-   Date.prototype.format = function(dtime) { 
-     var j = { 
-        "M+" : this.getMonth()+1,                 //Month
-        "d+" : this.getDate(),                    //Day 
-        "h+" : this.getHours(),                   //Hour 
-        "m+" : this.getMinutes(),                 //Minute 
-        "s+" : this.getSeconds(),                 //Second
-    }; 
-    if(/(y+)/.test(dtime)) {
-      dtime=dtime.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
-    }
-     for(var i in j) {
-        if(new RegExp("("+ i +")").test(dtime)){
-          dtime = dtime.replace(RegExp.$1, (RegExp.$1.length==1) ? (j[i]) : (("00"+ j[i]).substr((""+ j[i]).length)));
-         }
-     }
-    return dtime; 
-}     
-
-    </script>
     
 </body>
 </html>
